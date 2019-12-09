@@ -1,6 +1,9 @@
 {
   "name": "netmodular-ui-map",
-  "version": "1.0.0",
+  "version": "1.0.1",
+  "title": "NetModular前端地图组件库",
+  "description": "NetModular前端地图组件库",
+  "main": "packages/components/index.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
