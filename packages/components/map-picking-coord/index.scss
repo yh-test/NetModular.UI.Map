@@ -2,7 +2,8 @@
   &-popover {
     position: relative;
     padding: 0 !important;
-
+    border: none !important;
+    border-radius: 0 !important;
     &.fullscreen {
       position: fixed !important;
       left: 0 !important;
@@ -11,12 +12,18 @@
       height: 100% !important;
       margin: 0 !important;
       padding: 0 !important;
+
       .nm-map-picking-coord-box {
         position: absolute;
         top: 0;
         left: 0;
-        padding: 35px 5px 5px 5px;
+        padding: 33px 3px 43px 3px;
         height: 100% !important;
+      }
+      .nm-map-picking-coord-footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
       }
     }
 
@@ -97,7 +104,7 @@
 
   &-box {
     width: 100%;
-    padding: 5px;
+    padding: 3px;
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
@@ -186,6 +193,7 @@
         }
 
         .no-data {
+          margin-top: 20px;
           text-align: center;
         }
       }
@@ -193,8 +201,39 @@
   }
 
   &-input {
-    .el-input__inner {
+    .el-icon-coordinate {
       cursor: pointer;
+      &:hover {
+        color: #000;
+      }
+    }
+  }
+
+  &-footer {
+    height: 40px;
+    line-height: 40px;
+    border-top: 1px solid #ebeef5;
+
+    .left,
+    .right {
+      padding: 0 10px;
+      display: inline-block;
+      width: 50%;
+      box-sizing: border-box;
+    }
+
+    .left {
+      .curr {
+        color: #f56c6c;
+
+        .el-icon-coordinate {
+          margin-right: 5px;
+          font-size: 15px;
+        }
+      }
+    }
+    .right {
+      text-align: right;
     }
   }
 }

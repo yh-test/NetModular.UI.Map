@@ -1,6 +1,6 @@
 <template>
   <div class="nm-map-picking-coord">
-    <el-popover v-model="visible" title="坐标拾取" placement="top" :popper-class="popperClass" :width="width" trigger="manual" @show="onShow">
+    <el-popover v-model="visible" title="坐标拾取" placement="top" :popper-class="popperClass" :width="width" trigger="manual" @after-enter="onShow">
       <i class="el-icon-close" @click="visible = false"></i>
       <i v-if="fullscreen" :class="fullscreen_ ? 'el-icon-minus' : 'el-icon-rank'" @click="fullscreen_ = !fullscreen_"></i>
       <div class="nm-map-picking-coord-box" :style="{ height: height + 'px' }">
@@ -23,15 +23,18 @@
           </div>
         </div>
       </div>
-      <el-input
-        class="nm-map-picking-coord-input"
-        slot="reference"
-        :value="label"
-        :placeholder="placeholder"
-        :readonly="!allowInput"
-        @click.native="visible = !visible"
-        suffix-icon="el-icon-coordinate"
-      ></el-input>
+      <div class="nm-map-picking-coord-footer">
+        <div class="left">
+          <span class="curr"> <i class="el-icon-coordinate"></i>当前坐标：{{ curr }}</span>
+        </div>
+        <div class="right">
+          <el-button size="mini" type="success" @click="onSave">确认</el-button>
+          <el-button size="mini" type="info" @click="reset">重置</el-button>
+        </div>
+      </div>
+      <el-input class="nm-map-picking-coord-input" slot="reference" v-model="label" :placeholder="placeholder" :readonly="!allowInput">
+        <i slot="suffix" class="el-input__icon el-icon-coordinate" @click="visible = !visible"></i>
+      </el-input>
     </el-popover>
   </div>
 </template>
@@ -52,7 +55,12 @@ export default {
       loading: false,
       active: null,
       marker: null,
-      selection: null
+      selection: null,
+      defaultPoint: {
+        lng: 116.404,
+        lat: 39.915
+      },
+      oldValue: this.value
     }
   },
   props: {
@@ -64,11 +72,11 @@ export default {
     },
     width: {
       type: String,
-      default: '750'
+      default: '850'
     },
     height: {
       type: String,
-      default: '500'
+      default: '350'
     },
     placeholder: {
       type: String,
@@ -102,14 +110,32 @@ export default {
     }
   },
   computed: {
-    label() {
-      if (this.value && typeof this.value === 'object') {
-        return `${this.value.lng},${this.value.lat}`
+    label: {
+      get() {
+        if (this.value && typeof this.value === 'object') {
+          return `${this.value.lng},${this.value.lat}`
+        }
+        return ''
+      },
+      set(val) {
+        if (!val || val.indexOf(',') < 0) {
+          this.selection = Object.assign({}, this.defaultPoint)
+        } else {
+          const arr = val.split(',')
+          this.selection = { lng: parseFloat(arr[0].trim()), lat: parseFloat(arr[1].trim()) }
+        }
+        this.center = this.selection
+        this.onSave()
       }
-      return ''
     },
     popperClass() {
       return `nm-map-picking-coord-popover ${this.fullscreen_ ? 'fullscreen' : ''} ${this.type}`
+    },
+    curr() {
+      if (this.selection && typeof this.selection === 'object') {
+        return `${this.selection.lng},${this.selection.lat}`
+      }
+      return ''
     }
   },
   methods: {
@@ -159,12 +185,10 @@ export default {
         lng: point.lng.toFixed(this.precision),
         lat: point.lat.toFixed(this.precision)
       }
-      this.$emit('input', this.selection)
     },
     onShow() {
-      if (!this.marker) {
-        this.createMarker()
-      }
+      this.createMarker()
+      this.center = Object.assign({}, this.value)
     },
     //创建标注
     createMarker() {
@@ -174,6 +198,16 @@ export default {
         }
         this.marker = new BMap.Marker(this.selection) // 创建标注
         this.map.addOverlay(this.marker) // 将标注添加到地图中
+      }
+    },
+    onSave() {
+      this.$emit('input', this.selection)
+      this.visible = false
+    },
+    reset() {
+      if (this.map) {
+        this.center = Object.assign({}, this.oldValue)
+        this.selection = Object.assign({}, this.oldValue)
       }
     }
   },
@@ -186,7 +220,8 @@ export default {
     }
   },
   created() {
-    this.selection = this.center = Object.assign({}, this.value)
+    this.center = Object.assign({}, this.value)
+    this.selection = Object.assign({}, this.value)
   }
 }
 </script>

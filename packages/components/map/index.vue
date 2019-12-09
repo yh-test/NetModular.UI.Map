@@ -182,11 +182,8 @@ export default {
     }
   },
   watch: {
-    center: {
-      deep: true,
-      handler() {
-        this.centerAndZoom()
-      }
+    center() {
+      this.centerAndZoom()
     },
     zoom() {
       this.setZoom()
