@@ -67,3 +67,5 @@ export default {
   </el-row>
 </nm-form-page>
 ```
+
+演示 Demo [https://nm.iamoldli.com/docs/ui/#/components/map-coord-picking/demo1](https://nm.iamoldli.com/docs/ui/#/components/map-coord-picking/demo1)

@@ -91,7 +91,7 @@ export default {
     disabled: Boolean,
     /**允许手动输入 */
     allowInput: Boolean,
-    /**查询延时，默认800ms */
+    /**查询延时，默认700ms */
     delay: {
       type: Number,
       default: 700
@@ -106,7 +106,7 @@ export default {
       type: Number,
       default: 15
     },
-    /**启用滚轮放大缩小，默认禁用 */
+    /**启用滚轮放大缩小，默认启用 */
     scrollWheelZoom: {
       type: Boolean,
       default: true

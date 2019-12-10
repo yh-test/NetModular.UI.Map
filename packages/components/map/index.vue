@@ -107,7 +107,7 @@ export default {
           }
           let script = document.createElement('script')
           script.type = 'text/javascript'
-          script.src = 'http://api.map.baidu.com/api?v=3.0&ak=' + ak + '&callback=_mapInit'
+          script.src = '//api.map.baidu.com/api?v=3.0&ak=' + ak + '&callback=_mapInit'
           document.head.appendChild(script)
         }
       })
