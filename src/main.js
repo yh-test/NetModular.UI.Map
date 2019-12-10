@@ -1,18 +1,14 @@
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
-import NmMap from '../packages/components'
+import Skins from 'netmodular-ui'
+import systemService from './api/system'
+import Admin from './index'
 
-Vue.config.productionTip = false
+// 获取系统信息
+const system = systemService.get()
 
-Vue.use(ElementUI)
-Vue.use(NmMap, { ak: 'q96f4kWdHsVg1Y8tlclqYvrlpdnhlz5l' })
+system.modules = [Admin]
+system.api = { baseUrl: '' }
 
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app')
+// 设置个时间，防止等待页面闪烁
+setTimeout(() => {
+  Skins.use({ system })
+}, 500)

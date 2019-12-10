@@ -2,6 +2,11 @@
   <div ref="map" class="nm-map" :style="{ width, height }"></div>
 </template>
 <script>
+/**默认坐标点 */
+const defaultCenter = {
+  lng: 116.404,
+  lat: 39.915
+}
 export default {
   name: 'Map',
   data() {
@@ -134,11 +139,15 @@ export default {
       this.triggerAutoResize()
     },
     centerAndZoom() {
-      if (typeof this.center === 'object') {
-        const point = new BMap.Point(this.center.lng, this.center.lat)
+      let center = this.center
+      if (!center) {
+        center = Object.assign({}, defaultCenter)
+      }
+      if (typeof center === 'object') {
+        const point = new BMap.Point(center.lng, center.lat)
         this.map.centerAndZoom(point, this.zoom)
       } else {
-        this.map.centerAndZoom(this.center, this.zoom)
+        this.map.centerAndZoom(center, this.zoom)
       }
     },
     setZoom() {
@@ -226,14 +235,11 @@ export default {
     }
   },
   mounted() {
-    this.createScript().then(this.init)
+    this.$nextTick(() => {
+      setTimeout(() => {
+        this.createScript().then(this.init)
+      }, 500)
+    })
   }
 }
 </script>
-<style lang="scss">
-.nm-map {
-  .anchorBL {
-    display: none;
-  }
-}
-</style>
