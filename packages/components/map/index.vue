@@ -165,6 +165,9 @@ export default {
     setMaxZoom() {
       this.maxZoom && this.map.setMaxZoom(this.maxZoom)
     },
+    setMapType() {
+      this.map.setMapType(this.mapType)
+    },
     triggerDragging() {
       this.dragging ? this.map.enableDragging() : this.map.disableDragging()
     },

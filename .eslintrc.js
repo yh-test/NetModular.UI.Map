@@ -13,6 +13,8 @@ module.exports = {
   },
   globals: {
     BMap: 'readonly',
-    BMAP_STATUS_SUCCESS: 'readonly'
+    BMAP_STATUS_SUCCESS: 'readonly',
+    BMAP_HYBRID_MAP: 'readonly',
+    BMAP_ANIMATION_BOUNCE: 'readonly'
   }
 }
